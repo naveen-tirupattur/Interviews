@@ -1,9 +1,113 @@
 package my.interview.samples;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.PriorityQueue;
 
 public class HeapProblems {
 
+	public static void printSkylineUtil() {
+		
+	}
+	
+	// Classes required for Sky line Problem
+	public static class Building implements Comparable<Building>{
+		
+		int start, end, height;
+		
+		public Building(int start, int end, int height) {
+			this.start = start;
+			this.end = end;
+			this.height = height;
+		}
+
+		@Override
+		public int compareTo(Building o) {
+			return Integer.compare(this.height, o.height);
+		}
+	}
+	
+	public static class Edge implements Comparable<Edge> {
+		
+		int position, height;
+		boolean isStart;
+		Building building;
+		
+		public Edge (int position, int height, boolean isStart, Building building) {
+			this.position = position;
+			this.isStart = isStart;
+			this.height = height;
+			this.building = building;
+		}
+		
+		public Edge (int position, int height) {
+			this.position = position;
+			this.height = height;
+		}
+		
+		@Override
+		public int compareTo(Edge o) {
+			
+			// If both the edges don't start at same position
+			if(this.position != o.position) return Integer.compare(this.position, o.position);
+			
+			// If both the edges are starting at same position, the taller building goes first -- why ?
+			// Always only the taller building shows up in the sky line, which is not possible if we add smaller building first
+			// Imagine the heap is empty and if we add the smaller building first then we print the smaller building which is wrong
+			if(this.isStart && o.isStart) return Integer.compare(o.height, this.height);
+			
+			// If both the edges are ending at same position, the smaller building goes first -- why ?
+			// It does'nt matter, if there are no overlapping edges at this position, then we print this position
+			// If there are overlapping positions then we check for tallest edge height in the remove, so we print the correct height at this position
+			if(!this.isStart && !o.isStart) return Integer.compare(this.height, o.height);
+			
+			// If one is starting and other is ending, the starting building goes first -- why ?
+			// Because we remove the building from heap when we hit the ending edge and if heap is empty we print that edge 
+			// but if the starting edge at that position is higher than the ending edge, we should'nt be printing the ending edge.
+			return this.isStart ? -1:1;
+		}	
+	}
+	
+	// Print the sky line
+	public static void printSkyline(List<Building> buildings) {
+		// List of edges
+		List<Edge> edgesList = new ArrayList<Edge>();
+		// Heap to store edge heights
+		PriorityQueue<Building> heap = new PriorityQueue<Building>(10, Collections.reverseOrder());
+		for(Building b:buildings) {
+			edgesList.add(new Edge(b.start,b.height,false, b));
+			edgesList.add(new Edge(b.end,b.height,true,b));
+		}
+		
+		// Sort the edges
+		Collections.sort(edgesList);
+		
+		//Do a sweep line algorithm
+		for(Edge e:edgesList) {
+			if(e.isStart) {
+				// Check if heap is empty or the top of heap is smaller than current edge
+				if(heap.isEmpty() || heap.peek().height < e.height) {
+					System.out.println(e.position+","+e.height);
+				}
+				// Add the building to the heap
+				heap.add(e.building);
+			} else {
+				heap.remove(e.building);
+				// If the heap is empty then print the ending edge
+				if(heap.isEmpty()) {
+					System.out.println(e.position+", 0");
+				} else { //If not empty then check if the current top of the heap has height less than the edge being removed
+					// If the top of the heap is taller than current edge, this position will not be visible in skyline
+					if(e.height < heap.peek().height) {
+						System.out.println(e.position+","+heap.peek().height);
+					}
+				}
+			}
+		}
+	}
+	
+		
 //	public static class MedianOfStream
 //	{
 //		PriorityQueue maxHeap,minHeap;
