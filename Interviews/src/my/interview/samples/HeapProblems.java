@@ -9,6 +9,19 @@ public class HeapProblems {
 
 	public static void printSkylineUtil() {
 		
+		List<Building> buildings = new ArrayList<>();
+		buildings.add(new Building(1, 5, 11));
+		buildings.add(new Building(2, 7, 6));
+		buildings.add(new Building(3, 9, 13));
+		buildings.add(new Building(12, 16, 7));
+		buildings.add(new Building(14, 25, 3));
+		buildings.add(new Building(19, 22, 18));
+		buildings.add(new Building(23, 29, 13));
+		buildings.add(new Building(24, 28, 4));
+		
+		printSkyline(buildings);
+		
+		
 	}
 	
 	// Classes required for Sky line Problem
@@ -76,8 +89,8 @@ public class HeapProblems {
 		// Heap to store edge heights
 		PriorityQueue<Building> heap = new PriorityQueue<Building>(10, Collections.reverseOrder());
 		for(Building b:buildings) {
-			edgesList.add(new Edge(b.start,b.height,false, b));
-			edgesList.add(new Edge(b.end,b.height,true,b));
+			edgesList.add(new Edge(b.start,b.height,true, b));
+			edgesList.add(new Edge(b.end,b.height,false,b));
 		}
 		
 		// Sort the edges
@@ -99,7 +112,7 @@ public class HeapProblems {
 					System.out.println(e.position+", 0");
 				} else { //If not empty then check if the current top of the heap has height less than the edge being removed
 					// If the top of the heap is taller than current edge, this position will not be visible in skyline
-					if(e.height < heap.peek().height) {
+					if(e.height > heap.peek().height) {
 						System.out.println(e.position+","+heap.peek().height);
 					}
 				}
@@ -211,16 +224,18 @@ public class HeapProblems {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		
+		// Print the sky line
+		printSkylineUtil();
 
-		int[] a = new int[]{9,6,-1,3,2,4,8,10,-11,12};
-		int[][] l = new int[][]{{1,3,5,7,9},{2,4,8,11,13},{6,10,12,14,15}};
-
-		a = mergeArrays(l, 5, 3);
-		for(int i=0;i<a.length;i++)
-		{
-			System.out.println(a[i]);
-		}
+//		int[] a = new int[]{9,6,-1,3,2,4,8,10,-11,12};
+//		int[][] l = new int[][]{{1,3,5,7,9},{2,4,8,11,13},{6,10,12,14,15}};
+//
+//		a = mergeArrays(l, 5, 3);
+//		for(int i=0;i<a.length;i++)
+//		{
+//			System.out.println(a[i]);
+//		}
 		//		try {
 		//			System.out.println(getMedianFromStream(a));
 		//		} catch (Exception e) {
