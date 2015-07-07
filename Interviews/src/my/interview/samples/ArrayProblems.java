@@ -648,36 +648,6 @@ public class ArrayProblems {
 		return result;
 	}
 
-	public static int lis(int[] a,int n)
-	{
-		int[] l = new int[n];
-		for(int i=0;i<n;i++)
-		{
-			l[i] = 1;
-		}
-
-		int max=0;
-		for(int j=1;j<n;j++)
-		{
-			max = 0;
-			for(int i=0;i<j;i++)
-			{
-				if(a[i] < a[j] && max < l[i]) max = l[i];
-
-			}
-			l[j] = max + 1;
-		}
-
-		max = 0;
-		for(int i=0;i<n;i++)
-		{
-			if(max < l[i]) max = l[i];
-		}
-		return max;
-	}
-
-
-
 	public static double getMedian(int[] a,int n)
 	{
 		if(n%2==0){

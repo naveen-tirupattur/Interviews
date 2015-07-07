@@ -26,6 +26,34 @@ public class DynamicProgrammingProblems {
 		System.out.println(m[change]);
 	}
 
+	public static int longestIncreasingSubSequence(int[] a,int n)
+	{
+		int[] l = new int[n];
+		for(int i=0;i<n;i++)
+		{
+			l[i] = 1;
+		}
+
+		int max=0;
+		for(int j=1;j<n;j++)
+		{
+			max = 0;
+			for(int i=0;i<j;i++)
+			{
+				if(a[i] < a[j] && max < l[i]) max = l[i];
+
+			}
+			l[j] = max + 1;
+		}
+
+		max = 0;
+		for(int i=0;i<n;i++)
+		{
+			if(max < l[i]) max = l[i];
+		}
+		return max;
+	}
+	
 	public static int lcsRecursion(char[] a,char[] b, int i, int j)
 	{
 		if(i==0 ||j==0) return 0;
