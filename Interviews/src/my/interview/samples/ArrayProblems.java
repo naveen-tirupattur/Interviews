@@ -88,9 +88,34 @@ public class ArrayProblems {
 		//		int[] b = {6,7,8,11,15,17,20,25};
 		//		System.out.println(findKSmallest(a, b, a.length, b.length, 8));
 
-		findDeepestPit();
+		//findDeepestPit();
+		
+		findMinimalDifferenceUtil();
 
 	}
+	
+	public static void findMinimalDifferenceUtil() {
+		int[] a = {3,1,2,4,3};
+		findMinimalDifference(a);
+	}
+	
+	// Divide the array into 2 parts without rearrangement such that difference between these 2 parts is minimal
+	public static void findMinimalDifference(int[] a) {
+		int sum = 0;
+		for(int i=0;i<a.length;i++) {
+			sum += a[i];
+		}
+		int min=Integer.MAX_VALUE,rsum = 0;
+		for(int i=0;i<a.length;i++) {
+			sum = sum-a[i];
+			rsum = rsum+a[i];
+			if( Math.abs(rsum-sum) < min)
+				min = Math.abs(sum-rsum);
+		}
+		
+		System.out.println("Minimum difference: "+min);
+	}
+	
 
 	public static void findDeepestPit() {
 //		int[] a = {0,1,3,-2,0,1,0,-3,2,3};
