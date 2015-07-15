@@ -7,6 +7,15 @@ import java.util.Random;
 
 public class ThreadProblems {
 
+	/**
+	 * Threads 1 to N execute a method critical. Before they
+	 * can execute this they have to execute another method rendezvous. Only when all
+	 * the threads have executed rendezvous, any thread can execute critical
+	 * and they can call critical again for k+1th time only after all the
+	 * threads have called it k times.
+	*/
+	
+	// Object to store the count of each thread and number of threads
 	public static class pObject {
 		public int count;
 		public int n;
@@ -15,17 +24,24 @@ public class ThreadProblems {
 			this.n = n;
 		}
 
+		// Check if the all the threads have called rendezvous 
+		// and if other threads have called critical before making call again for current thread.
 		public void critical() throws InterruptedException {
 			int count = 0;
 			
+			// If other threads have not called rendezvous
 			if(this.count < n) wait();
 			
+			// Get the count for the current thread's calls
 			String threadName = Thread.currentThread().getName();
 			if(countMap.containsKey(threadName)) {
 				count = countMap.get(threadName);
 			}
+			
+			// Update the count
 			countMap.put(threadName, count+1);
 			
+			// Check the count of other thread's calls and wait
 			for(String s: countMap.keySet()) {
 				if(countMap.get(s) != count+1) wait();
 			}
@@ -49,9 +65,9 @@ public class ThreadProblems {
 		public void run() {
 			try {
 				while(true) {
-					synchronized (p) {
+					synchronized (p) { // Get a lock on the object
 						p.rendezvous();
-						p.count++;
+						p.count++; // Update the count of threads who made the rendezvous call
 						p.critical();
 					}
 					Thread.sleep(new Random().nextInt(10000));
