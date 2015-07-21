@@ -126,6 +126,7 @@ public class ThreadProblems {
 
 	}
 
+	// Thread to print even values
 	public static class evenThread implements Runnable {
 
 		public Counter counter;
@@ -153,6 +154,7 @@ public class ThreadProblems {
 		}
 	}
 
+	// Thread to print odd values
 	public static class oddThread implements Runnable {
 
 		public Counter counter;
@@ -192,12 +194,125 @@ public class ThreadProblems {
 
 	}
 
+
+	/**
+	 * Implement asynchronous callbacks without timeout
+	 * EPI : 20.5
+	 */
+
+	public static class Requestor {
+
+		public String request;
+		public long timeOut;
+		public String response;
+
+		public String getResponse() {
+			return response;
+		}
+
+		public void setResponse(String response) {
+			this.response = response;
+		}
+
+		public Requestor(String request, long timeOut) {
+			this.request = request;
+			this.timeOut = timeOut;
+		}
+
+		public long getTimeOut() {
+			return timeOut;
+		}
+
+		public void setTimeOut(long timeOut) {
+			this.timeOut = timeOut;
+		}
+
+		public String getRequest() {
+			return request;
+		}
+
+		public void setRequest(String request) {
+			this.request = request;
+		}
+
+		public void dispatch(){
+			// Main thread which will accept the request and spawns a new thread
+			Thread t = new Thread(new Runnable() {
+				// Child thread which calls the execute()
+			Thread childThread = new Thread(new Runnable() {
+				@Override
+				public void run() {
+					try {
+						// Set a timeout on the execute and get response.
+						setResponse(execute(getRequest(), getTimeOut()+1000)); // For testing purposes the make this thread sleep more than timeout period
+					} catch (Exception e) {
+						e.printStackTrace();
+						return;
+					}
+					
+					// Process the response
+					processResponse(getResponse());
+				}
+			});
+			
+			@Override
+			public void run() {
+				// Start the child thread which does actual work
+				childThread.start();
+				try {
+					// Make this thread sleep for time out period
+					Thread.sleep(getTimeOut());
+					
+					// Child thread will be interrupted if it still alive
+					childThread.interrupt();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+			}); 
+			
+			t.start();
+		}
+
+		public void processResponse(String response) {
+			System.out.println("Processed response: "+response);
+		}
+
+		public String execute(String request, long timeout) throws Exception {
+			try {
+				// Sleep this thread
+				Thread.sleep(timeout);
+			} catch (InterruptedException e) {
+				error(); // If interrupted throw an exception
+			}
+			
+			// Else do the execute.
+			return "execute completed";
+		}
+
+		public void error() throws Exception {
+
+			throw new Exception("Failed to process the request. Execute thread interrupted");
+		}
+
+	}
+	
+	
+	public static void testCallback() {
+		
+		Requestor r = new Requestor("Hello", 10000);
+		r.dispatch();
+	}
+	
+	
+	
+
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 
-		printEvenOdd();
+		testCallback();
 	}
 
 	public static void test()
