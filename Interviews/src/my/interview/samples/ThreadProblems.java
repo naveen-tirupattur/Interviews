@@ -1,12 +1,136 @@
 package my.interview.samples;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Random;
-import java.util.concurrent.atomic.AtomicInteger;
+import java.util.TreeMap;
 
 
 public class ThreadProblems {
+
+	/**
+	 * Implement a timer class.
+	 * A method which accepts a String (name) and a Thread(Object) to store the tasks to manage 
+	 * A start method which starts a thread with the matching name
+	 * A cancel method to remove a thread with the matching name if it is'nt started already
+	 */
+
+	public static void testTimer() {
+
+		final Timer t = new Timer();
+
+		Runnable timerThread = new Runnable() {
+
+			@Override
+			public void run() {
+				final long startTime = System.currentTimeMillis();
+				while(true) {
+					synchronized (t) {
+						try {
+							if(t.getObjHeap().isEmpty())
+								t.wait();
+							else {
+								Obj o = t.getObjHeap().peek();
+								long diff = (System.currentTimeMillis() - startTime - o.startTime);
+								if(diff > 0) 
+									Thread.sleep(diff);
+								else if(diff == 0) {
+									new Thread(o).start();
+									t.getObjHeap().remove();
+								}
+							}
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+
+					}
+				}
+			}
+		};
+
+		new Thread(timerThread).start();
+
+		Runnable task = new Runnable() {
+
+			@Override
+			public void run() {
+				synchronized (t) {
+					t.add("t1", new Obj("t1",10));
+					t.add("t2", new Obj("t2", 5));
+					t.add("t3", new Obj("t3", 13));
+					t.add("t4", new Obj("t4", 8));
+					t.notifyAll();
+				}
+			}
+
+		};
+
+		new Thread(task).start();
+
+	}
+
+	public static class Timer {
+
+		public Map<String, Obj> objMap;
+		public java.util.PriorityQueue<Obj> objHeap;
+
+		public java.util.PriorityQueue<Obj> getObjHeap() {
+			return objHeap;
+		}
+
+		public Map<String, Obj> getObjMap() {
+			return objMap;
+		}
+
+		public Timer() {
+			objMap = new TreeMap<String, Obj>();
+			objHeap = new PriorityQueue<Obj>();
+		}
+
+		public void add(String name, Obj ob) {
+			objMap.put(name, ob);
+			objHeap.add(ob);
+		}
+
+		public void start(String name) {
+			if(objMap.containsKey(name)) {
+				Obj o = objMap.get(name);
+				new Thread(o).start();
+			}
+		}
+
+		public void cancel(String name) {
+			if(objMap.containsKey(name)) {
+				Obj o = objMap.get(name);
+				if(!new Thread(o).isAlive()) {
+					objMap.remove(name);
+				}
+			}
+		}
+	}
+
+	public static class Obj implements Runnable, Comparable<Obj> {
+
+		String name;
+		int startTime;
+
+		public Obj(String name, int startTime) {
+			this.name = name;
+			this.startTime = startTime;
+		}
+
+		@Override
+		public void run() {
+			System.out.println("Running thread: "+name+" at: "+System.currentTimeMillis());
+		}
+
+		@Override
+		public int compareTo(Obj o) {
+			return Integer.compare(this.startTime, o.startTime);
+		}
+	}
 
 	/**
 	 * Threads 1 to N execute a method critical. Before they
@@ -239,38 +363,38 @@ public class ThreadProblems {
 			// Main thread which will accept the request and spawns a new thread
 			Thread t = new Thread(new Runnable() {
 				// Child thread which calls the execute()
-			Thread childThread = new Thread(new Runnable() {
+				Thread childThread = new Thread(new Runnable() {
+					@Override
+					public void run() {
+						try {
+							// Set a timeout on the execute and get response.
+							setResponse(execute(getRequest(), getTimeOut()+1000)); // For testing purposes the make this thread sleep more than timeout period
+						} catch (Exception e) {
+							e.printStackTrace();
+							return;
+						}
+
+						// Process the response
+						processResponse(getResponse());
+					}
+				});
+
 				@Override
 				public void run() {
+					// Start the child thread which does actual work
+					childThread.start();
 					try {
-						// Set a timeout on the execute and get response.
-						setResponse(execute(getRequest(), getTimeOut()+1000)); // For testing purposes the make this thread sleep more than timeout period
-					} catch (Exception e) {
+						// Make this thread sleep for time out period
+						Thread.sleep(getTimeOut());
+
+						// Child thread will be interrupted if it still alive
+						childThread.interrupt();
+					} catch (InterruptedException e) {
 						e.printStackTrace();
-						return;
 					}
-					
-					// Process the response
-					processResponse(getResponse());
 				}
-			});
-			
-			@Override
-			public void run() {
-				// Start the child thread which does actual work
-				childThread.start();
-				try {
-					// Make this thread sleep for time out period
-					Thread.sleep(getTimeOut());
-					
-					// Child thread will be interrupted if it still alive
-					childThread.interrupt();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
 			}); 
-			
+
 			t.start();
 		}
 
@@ -285,7 +409,7 @@ public class ThreadProblems {
 			} catch (InterruptedException e) {
 				error(); // If interrupted throw an exception
 			}
-			
+
 			// Else do the execute.
 			return "execute completed";
 		}
@@ -296,23 +420,23 @@ public class ThreadProblems {
 		}
 
 	}
-	
-	
+
+
 	public static void testCallback() {
-		
+
 		Requestor r = new Requestor("Hello", 10000);
 		r.dispatch();
 	}
-	
-	
-	
+
+
+
 
 	/**
 	 * @param args
 	 */
 	public static void main(String[] args) {
 
-		testCallback();
+		testTimer();
 	}
 
 	public static void test()

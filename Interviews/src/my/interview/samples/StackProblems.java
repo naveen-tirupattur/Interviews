@@ -45,7 +45,6 @@ public class StackProblems {
 		java.util.Queue<Object> q1,q2;
 		
 		public StackFromQueue() {
-			// TODO Auto-generated constructor stub
 			q1 = new LinkedList<>();
 			q2 = new LinkedList<>();
 		}
