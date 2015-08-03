@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.swing.event.ListSelectionEvent;
@@ -19,7 +21,6 @@ public class ArrayProblems {
 	public static int inversions = 0;
 	public static int ways=0;
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
 		//int[] a = new int[]{1,0,1,0,0,1,1,0,1,1,0};
 		//		int[] a = new int[]{5,2,1,3,4,6,9};
@@ -89,16 +90,69 @@ public class ArrayProblems {
 		//		System.out.println(findKSmallest(a, b, a.length, b.length, 8));
 
 		//findDeepestPit();
-		
-		findMinimalDifferenceUtil();
+
+		//findMinimalDifferenceUtil();
+
+		findMaximumSubArrayUtil();
 
 	}
-	
+
+	public static void findMaximumSubArrayUtil() {
+
+		int[] a = {1, 0, 0, 1, 1, 0, 0, 1, 1};
+		findMaximumSubArray(a);
+	}
+
+	public static void findMaximumSubArray(int[] a) {
+
+		Map<Integer, Integer> positionMap = new HashMap<Integer, Integer>();
+		int[] sumLeft = new int[a.length];
+		int maxSize = -1, stIndex = 0;
+
+		sumLeft[0] = (a[0]==0)?-1:1;
+		positionMap.put(sumLeft[0], 0);
+		for(int i=1;i<a.length;i++) {
+
+			sumLeft[i] = sumLeft[i-1] + ((a[i]==0)?-1:1);
+
+			// Case 1: Check the maximum size from first element, if first element starts with 0
+			if(sumLeft[i] == 0) {
+				int size = i+1;
+				if(size > maxSize) {
+					maxSize = size;
+					stIndex = 0;
+
+				}
+			}
+
+			// Case 2: Check the maximum size from any element.
+			// Check if you have seen this count before, if not update the left most position
+			if(!positionMap.containsKey(sumLeft[i])) {
+				positionMap.put(sumLeft[i], i);
+			} else {
+				// If seen, get the left most position. The sub array would have started after the left most position. 
+				// Check for the size of sub array and update the maximum size
+				int leftPosition = positionMap.get(sumLeft[i])+1;
+				int size = i-leftPosition+1;
+				if(size > maxSize) {
+					maxSize = size;
+					stIndex = leftPosition;
+				}
+			}
+
+		}
+
+		if(maxSize == -1) 
+			System.out.println("No subarray found");
+		else
+			System.out.println("Maximum sub array of size: "+ maxSize+ " from: "+stIndex+" to "+(maxSize+stIndex-1));
+	}
+
 	public static void findMinimalDifferenceUtil() {
 		int[] a = {3,1,2,4,3};
 		findMinimalDifference(a);
 	}
-	
+
 	// Divide the array into 2 parts without rearrangement such that difference between these 2 parts is minimal
 	public static void findMinimalDifference(int[] a) {
 		int sum = 0;
@@ -112,19 +166,19 @@ public class ArrayProblems {
 			if( Math.abs(rsum-sum) < min)
 				min = Math.abs(sum-rsum);
 		}
-		
+
 		System.out.println("Minimum difference: "+min);
 	}
-	
+
 
 	public static void findDeepestPit() {
-//		int[] a = {0,1,3,-2,0,1,0,-3,2,3};
+		//		int[] a = {0,1,3,-2,0,1,0,-3,2,3};
 		int[] a = {6,5,4,3,2,0,1,2,3,4,5,6};
 		findDeepestPit(a);
 	}
- 
+
 	public static void findDeepestPit(int[] a) {
-		
+
 		int maxDepth = 0, p = Integer.MIN_VALUE, r = Integer.MIN_VALUE;
 		// Start from 2nd element till n-1
 		for(int i = 1;i<a.length-1;i++) {
