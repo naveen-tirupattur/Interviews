@@ -8,7 +8,8 @@ import my.interview.samples.BacktrackingProblems.Board.BoardType;
 public class BacktrackingProblems {
 
 	public static void main(String[] args) {
-		doKCombinations(2);
+		//doKCombinations(2);
+		findProbability();
 	}
 	
 	public static void doKCombinations(int k) {
@@ -128,6 +129,59 @@ public class BacktrackingProblems {
 		sudoku(a,0,b);
 	}
 
+	
+	//Given a position (x,y) find probability that a knight is still in the board after k moves
+	public static void findProbability() {
+		Board b = initChessBoard();
+		System.out.println(findProbability(2,3,10,b));
+	}
+	
+	public static double findProbability(int x, int y, int numOfMoves, Board b) {
+		
+		// Check for base case
+		if(!isValidPosition(x,y,b)) return 0.0;
+		
+		if(numOfMoves==0) return 1.0;
+		
+		double probability = 0.0;
+		
+		// Get all possible candidates
+		List<Point> possibleMoves = findPossibleMoves(x,y);
+		
+		// Backtrack for each candidate
+		for(Point p:possibleMoves) {
+			probability += findProbability(p.x, p.y, numOfMoves-1, b)/8.0;
+		}
+		
+		return probability;
+	}
+	
+	// Check if the given position is a valid position on the chess board
+	public static boolean isValidPosition(int x, int y, Board b) {
+		// Check if position is out of bounds
+		if(x<0 || x>= b.dimension || y <0 || y>=b.dimension) return false;
+		return true;
+	}
+	
+	// Knight can move in 8 possible ways from the given position
+	public static List<Point> findPossibleMoves(int x, int y) {
+		List<Point> possibleMoves = new ArrayList<Point>();
+		// 1 Row above, columns change
+		possibleMoves.add(new Point(x-1, y-2));
+		possibleMoves.add(new Point(x-1, y+2));
+		// 1 Row below, columns change
+		possibleMoves.add(new Point(x+1, y-2));
+		possibleMoves.add(new Point(x+1, y+2));
+		// 2 Rows above, columns change
+		possibleMoves.add(new Point(x-2, y-1));
+		possibleMoves.add(new Point(x-2, y+1));
+		// 2 Rows below, columns change
+		possibleMoves.add(new Point(x+2, y-1));
+		possibleMoves.add(new Point(x+2, y+1));
+		
+		return possibleMoves;
+	}
+	
 	public static class Board {
 		int dimension;
 		int[][] elements;
