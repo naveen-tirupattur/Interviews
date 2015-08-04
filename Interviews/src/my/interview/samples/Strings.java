@@ -24,6 +24,59 @@ public class Strings {
 	/**
 	 * @param args
 	 */
+
+	/*
+	 * Implement a regex matcher 
+	 * fnmatch(p, s) --> bool
+	 *
+	 * p: pattern (GLOB Expression)
+	 * s: string
+	 *
+	 * ?: 1 any character
+	 * *: 0-n any character
+	 *
+	 *
+	 * p: /dev/sd? s: /dev/sda
+	 * p: t*.py s: test.py
+	 */ 
+
+	public static boolean isMatching(String pattern, int patternIndex, String searchString, int sStringIndex) {
+		// Check if both the indexes have reached end of the strings
+		if(patternIndex == pattern.length() && sStringIndex == searchString.length()) {
+			return true;
+		}
+		
+		// If one of them has not reached the end, then return false
+		if ((patternIndex == pattern.length() && sStringIndex != searchString.length()) || 
+		    (patternIndex != pattern.length() && sStringIndex == searchString.length()))
+		return false;
+		
+		// If both characters are equal or you hit the special character ?
+		if(pattern.charAt(patternIndex) == '?' || pattern.charAt(patternIndex)==searchString.charAt(sStringIndex)) {
+			return isMatching(pattern, patternIndex+1, searchString, sStringIndex+1);
+		}
+		
+		// If you hit the special character *, increment search index till you find the next character in pattern. if not return false
+		if(pattern.charAt(patternIndex) == '*') {
+			for(int i=sStringIndex;i<searchString.length();i++) {
+				if(isMatching(pattern, patternIndex+1, searchString, sStringIndex+i)) return true;
+			}	
+			return false;
+		}
+
+		return false;
+	}
+	
+	public static void testMatcher() {
+		System.out.println(isMatching("aa",0, "bb",0));
+	    System.out.println(isMatching("aa", 0,"a",0));
+	    System.out.println(isMatching("aa",0,"aa",0));
+	    System.out.println(isMatching("a*",0, "aaaa",0));
+	    System.out.println(isMatching("*a", 0,"aaaa",0));
+	    System.out.println(isMatching("t*.py", 0,"test.py",0));
+	    System.out.println(isMatching("/dev/sd?", 0,"/dev/sda",0));
+	}
+
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 
@@ -42,20 +95,20 @@ public class Strings {
 		//System.out.println("longest common substring: "+longestCommonSubString("ADBABC","BAB"));
 		//System.out.println(getEditDistance("SUNDAY","SATURDAY"));
 
-//		ArrayList<String> str = new ArrayList<>();
-//		str.add("a");
-//		str.add("b");
-//		str.add("c");
-//		//ArrayList<String> s=getSubsets2(str);
-//
-//		//				Collections.sort(s);
-//		//				
-//		String a = "abc";
-//		List<String> s=permutations(a);
-//		for(String s1: s)
-//		{
-//			System.out.println(s1);
-//		}
+		//		ArrayList<String> str = new ArrayList<>();
+		//		str.add("a");
+		//		str.add("b");
+		//		str.add("c");
+		//		//ArrayList<String> s=getSubsets2(str);
+		//
+		//		//				Collections.sort(s);
+		//		//				
+		//		String a = "abc";
+		//		List<String> s=permutations(a);
+		//		for(String s1: s)
+		//		{
+		//			System.out.println(s1);
+		//		}
 
 
 		//System.out.println("Is anagram: "+isAnagram2("dogse", "dogsm"));
@@ -70,8 +123,9 @@ public class Strings {
 
 
 		//System.out.println(getHash("fuckyou"));
-		
-		printPermutations("ABC");
+
+		//printPermutations("ABC");
+		testMatcher();
 
 	}
 	//Find the maximum length substring with all unique characters
@@ -115,8 +169,8 @@ public class Strings {
 				}
 			}
 		}
-		
-		
+
+
 		return s.substring(maxStIndex,maxEndIndex+1);
 	}
 
@@ -372,7 +426,7 @@ public class Strings {
 			if(dictionary.contains(s.substring(0, i)))
 			{
 				String suffix = s.substring(i);
-				
+
 
 			}
 		}
@@ -403,17 +457,17 @@ public class Strings {
 		return perms;
 	}
 
-	
+
 	public static void getPermutations(String s, String permString, List<String> permsList) {
 		if(s.length()==0) {
 			permsList.add(permString); return;
 		}
-		
+
 		for(int i=0;i<s.length();i++) {
 			getPermutations(s.substring(0, i)+s.substring(i+1), permString+s.charAt(i), permsList);
 		}
 	}
-	
+
 	public static void printPermutations(String s) {
 		List<String> permsList = new ArrayList<String>();
 		getPermutations(s, "", permsList);
@@ -421,7 +475,7 @@ public class Strings {
 			System.out.println(p);
 		}
 	}
-	
+
 	public static String reverseStringRecursion(String s)
 	{
 		if(s.length()==0) return "";
