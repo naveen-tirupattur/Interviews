@@ -11,6 +11,8 @@ import java.util.Random;
 
 import javax.swing.event.ListSelectionEvent;
 
+import org.w3c.dom.css.Rect;
+
 
 public class ArrayProblems {
 
@@ -93,10 +95,47 @@ public class ArrayProblems {
 
 		//findMinimalDifferenceUtil();
 
-		findMaximumSubArrayUtil();
+		//findMaximumSubArrayUtil();
+		
+		//findIntersectioUtil();
+		String s = "naveen";
+		System.out.println(s.intern());
 
 	}
 
+	
+	public static class Rectangle {
+		
+		int x,y;
+		int length,breadth;
+		
+		public Rectangle(int x, int y, int length, int breadth) {
+			this.x = x;
+			this.y = y;
+			this.length = length;
+			this.breadth = breadth;
+		}
+		
+	}
+	
+	public static void findIntersectioUtil() {
+		
+		Rectangle r1 = new Rectangle(1, 1, 3, 3);
+		Rectangle r2 = new Rectangle(2, 3, 3, 3);
+		
+		Rectangle intersectionRectangle = findIntersection(r1, r2);
+		System.out.println("Found intersecting rectangle with co-ordinates: "+intersectionRectangle.x+","+intersectionRectangle.y
+				+" with length: "+intersectionRectangle.length+" and breadth: "+intersectionRectangle.breadth);
+		
+	}
+	
+	public static Rectangle findIntersection(Rectangle r1, Rectangle r2) {
+		
+		if(r1.x <= r2.x && r2.x <= r1.x+r1.length && r1.y <= r2.y && r2.y <= r1.y + r1.breadth)
+		return new Rectangle(Math.max(r1.x,r2.x), Math.max(r1.y, r2.y), Math.abs(r2.x+r2.length - (r1.x+r1.length)), Math.abs(r2.y+r2.breadth - (r1.y+r1.breadth)));
+		else return new Rectangle(-1, -1, 0, 0);
+	}
+	
 	public static void findMaximumSubArrayUtil() {
 
 		int[] a = {1, 0, 0, 1, 1, 0, 0, 1, 1};
