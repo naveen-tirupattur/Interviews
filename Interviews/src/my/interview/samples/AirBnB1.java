@@ -5,7 +5,6 @@ import java.util.*;
 import java.util.List;
 import java.util.ArrayList;
 
-
 /*
  * Implement an iterator for list of lists with the following methods:
  * hasNext
@@ -17,8 +16,7 @@ import java.util.ArrayList;
 
  */
 
-
-class ListIterator{
+class ListIterator {
 
 	// The data structure
 	private List<List<Integer>> dList = new ArrayList<List<Integer>>();
@@ -34,23 +32,24 @@ class ListIterator{
 
 	}
 
-
-	public boolean hasNext(){
+	public boolean hasNext() {
 		// Check if child iterator is initialized
-		if(childIterator != null) return childIterator.hasNext();
+		if (childIterator != null)
+			return childIterator.hasNext();
 
-		if(parentIterator.hasNext()) {
+		if (parentIterator.hasNext()) {
 
 			// Get the next child
-			List l = (List)parentIterator.next();
+			List l = (List) parentIterator.next();
 
-			//			if(childIterator== null) 
-			//childIterator = l.iterator();
+			// if(childIterator== null)
+			// childIterator = l.iterator();
 
 			// If the parent has more children
-			if(l != null)
+			if (l != null)
 				childIterator = l.iterator();
-			else return false;
+			else
+				return false;
 
 			return childIterator.hasNext();
 		}
@@ -60,17 +59,19 @@ class ListIterator{
 
 	public Object next() {
 		// Check if child iterator is initialized
-		if(childIterator != null && childIterator.hasNext()) return childIterator.next();
+		if (childIterator != null && childIterator.hasNext())
+			return childIterator.next();
 
-		if(parentIterator.hasNext()) {
+		if (parentIterator.hasNext()) {
 
 			// Get the next child
 			List l = (List) parentIterator.next();
 
 			// If the parent has more children
-			if(l != null)
+			if (l != null)
 				childIterator = l.iterator();
-			else return null;
+			else
+				return null;
 
 			return childIterator.next();
 		}
@@ -81,23 +82,25 @@ class ListIterator{
 
 	public void remove() throws Exception {
 		// Check if child iterator is initialized
-		if(childIterator != null) 
-		{
-			childIterator.remove(); return;
+		if (childIterator != null) {
+			childIterator.remove();
+			return;
 		}
 
-		if(parentIterator.hasNext()) {
-			
+		if (parentIterator.hasNext()) {
+
 			// Get the next child
 			List l = (List) parentIterator.next();
 
 			// If the parent has more children
-			if(l != null)
+			if (l != null)
 				childIterator = l.iterator();
-			else return;
+			else
+				return;
 
-			childIterator.remove(); return;
-		}	
+			childIterator.remove();
+			return;
+		}
 
 	}
 
@@ -108,8 +111,8 @@ class AirBnB1 {
 
 		List<List<Integer>> dataList = new ArrayList<List<Integer>>();
 
-		//[[1,2],[3,4],[5,6]]
-		//[[1,2],[3,4],[],[],[5,6]]
+		// [[1,2],[3,4],[5,6]]
+		// [[1,2],[3,4],[],[],[5,6]]
 
 		List<Integer> list1 = new ArrayList<Integer>();
 		list1.add(1);
@@ -132,7 +135,6 @@ class AirBnB1 {
 		dataList.add(list5);
 		dataList.add(list3);
 
-
 		ListIterator i = new ListIterator(dataList);
 
 		System.out.println(i.next());
@@ -140,7 +142,7 @@ class AirBnB1 {
 
 		try {
 			i.remove();
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -148,10 +150,9 @@ class AirBnB1 {
 
 		System.out.println("New Iterator");
 		ListIterator newI = new ListIterator(dataList);
-		while(newI.hasNext()) {
+		while (newI.hasNext()) {
 			System.out.println(newI.next());
 		}
-
 
 	}
 }

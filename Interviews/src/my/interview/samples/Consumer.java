@@ -11,8 +11,7 @@ public class Consumer<K> implements Runnable {
 
 	private BlockingQueue<K> queue;
 
-	public Consumer(BlockingQueue<K> bQueue)
-	{
+	public Consumer(BlockingQueue<K> bQueue) {
 		this.queue = bQueue;
 	}
 
@@ -20,9 +19,8 @@ public class Consumer<K> implements Runnable {
 	public void run() {
 
 		try {
-			for(int i=0;i<10;i++)
-			{
-				System.out.println("Consumed: "+queue.dequeue());
+			for (int i = 0; i < 10; i++) {
+				System.out.println("Consumed: " + queue.dequeue());
 				Thread.sleep(10000);
 			}
 

@@ -11,8 +11,7 @@ public class Producer<K> implements Runnable {
 
 	private BlockingQueue<K> queue;
 
-	public Producer(BlockingQueue<K> bQueue)
-	{
+	public Producer(BlockingQueue<K> bQueue) {
 		this.queue = bQueue;
 	}
 
@@ -21,8 +20,7 @@ public class Producer<K> implements Runnable {
 
 		try {
 
-			for(int i=0;i<10;i++)
-			{
+			for (int i = 0; i < 10; i++) {
 				queue.enQueue(Long.valueOf(System.currentTimeMillis()));
 				System.out.println("produced");
 				Thread.sleep(10000);
@@ -34,4 +32,3 @@ public class Producer<K> implements Runnable {
 
 	}
 }
-

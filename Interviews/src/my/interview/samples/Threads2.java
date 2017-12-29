@@ -1,7 +1,5 @@
 package my.interview.samples;
 
-
-
 public class Threads2 {
 
 	/**
@@ -12,8 +10,8 @@ public class Threads2 {
 
 		BlockingQueue<Long> bQueue = new BlockingQueue<Long>();
 		Consumer<Long> consumer = new Consumer<Long>(bQueue);
-		
+
 		consumer.run();
-		
-	}	
+
+	}
 }

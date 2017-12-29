@@ -8,7 +8,7 @@ import java.util.TreeSet;
 
 public class EdgeWeightedGraph {
 
-	public Map<Node,Set<Edge>> edgeAdjacencyList;
+	public Map<Node, Set<Edge>> edgeAdjacencyList;
 	public int vertices;
 	public int edges;
 
@@ -24,75 +24,58 @@ public class EdgeWeightedGraph {
 		return edgeAdjacencyList;
 	}
 
-
-	public EdgeWeightedGraph(List<Node> nodes)
-	{
-		this.edgeAdjacencyList = (Map)new HashMap<Node,TreeSet<Edge>>();
+	public EdgeWeightedGraph(List<Node> nodes) {
+		this.edgeAdjacencyList = (Map) new HashMap<Node, TreeSet<Edge>>();
 		this.edges = 0;
 		this.vertices = 0;
-		for(Node n: nodes)
-		{
+		for (Node n : nodes) {
 			TreeSet<Edge> edgesSet = new TreeSet<>();
 			edgeAdjacencyList.put(n, edgesSet);
 			vertices++;
 		}
 	}
 
-	public void addEdge(Edge e)
-	{
+	public void addEdge(Edge e) {
 		edgeAdjacencyList.get(e.getFrom()).add(e);
 		edges++;
 	}
 
-	public Set<Node> getNodes()
-	{
+	public Set<Node> getNodes() {
 		return edgeAdjacencyList.keySet();
 	}
 
-	public Set<Edge> getEdges(Node src)
-	{
+	public Set<Edge> getEdges(Node src) {
 		return edgeAdjacencyList.get(src);
 	}
 
-	public boolean hasVertex(Node n)
-	{
+	public boolean hasVertex(Node n) {
 		return edgeAdjacencyList.containsKey(n);
 	}
 
-	public boolean hasEdge(Edge e)
-	{
+	public boolean hasEdge(Edge e) {
 		return edgeAdjacencyList.get(e.getFrom()).contains(e);
 	}
 
-	public Set<Node> getVertices()
-	{
+	public Set<Node> getVertices() {
 		return edgeAdjacencyList.keySet();
 	}
 
-	public Node getUnvisitedNode(Node n)
-	{
+	public Node getUnvisitedNode(Node n) {
 
 		return null;
 	}
 
-	public void clearNodes()
-	{
-		for(Node n:edgeAdjacencyList.keySet())
-		{
+	public void clearNodes() {
+		for (Node n : edgeAdjacencyList.keySet()) {
 			n.setVisited(false);
 		}
 	}
 
-	public String toString()
-	{
-		for(Node n:edgeAdjacencyList.keySet())
-		{
-			return "Node: "+n.data+" "+edgeAdjacencyList.get(n);
+	public String toString() {
+		for (Node n : edgeAdjacencyList.keySet()) {
+			return "Node: " + n.data + " " + edgeAdjacencyList.get(n);
 		}
 		return null;
 	}
-
-
-
 
 }

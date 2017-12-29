@@ -14,7 +14,7 @@ public class BitManipulation {
 	 */
 	public static void main(String[] args) {
 		try {
-		System.out.println(getClosest(7));
+		System.out.println(getClosest(2));
 		}
 		catch(Exception e) {
 			e.printStackTrace();

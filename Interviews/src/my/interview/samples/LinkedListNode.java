@@ -8,12 +8,11 @@ package my.interview.samples;
  *
  */
 public class LinkedListNode {
-	
+
 	public int value;
 	public LinkedListNode next;
-	
-	public LinkedListNode(int value,LinkedListNode node)
-	{
+
+	public LinkedListNode(int value, LinkedListNode node) {
 		this.value = value;
 		this.next = node;
 	}

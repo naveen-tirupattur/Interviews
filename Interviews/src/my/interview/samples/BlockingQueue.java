@@ -4,6 +4,7 @@
 package my.interview.samples;
 
 import java.util.LinkedList;
+
 /**
  * @author naveenit7sep
  * @param <K>
@@ -12,29 +13,25 @@ import java.util.LinkedList;
 public class BlockingQueue<K> {
 
 	public LinkedList<K> queue;
-	public final int MAX_SIZE=5;
+	public final int MAX_SIZE = 5;
 
-	public BlockingQueue()
-	{
+	public BlockingQueue() {
 		queue = new LinkedList<K>();
 
 	}
 
-	public synchronized void enQueue(Object o)
-	{
+	public synchronized void enQueue(Object o) {
 		try {
 
-			while(queue.size()==MAX_SIZE)
-			{
+			while (queue.size() == MAX_SIZE) {
 				wait();
 			}
 
-			if(queue.size()==0)
-			{
+			if (queue.size() == 0) {
 				notifyAll();
 			}
 			queue.addLast((K) o);
-			System.out.println("added: "+o);
+			System.out.println("added: " + o);
 
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -42,20 +39,16 @@ public class BlockingQueue<K> {
 		}
 	}
 
-	public synchronized Object dequeue()
-	{
-		try 
-		{
-			while(queue.size()==0)
-			{
+	public synchronized Object dequeue() {
+		try {
+			while (queue.size() == 0) {
 				wait();
 			}
 
-			if(queue.size()==MAX_SIZE)
-			{
+			if (queue.size() == MAX_SIZE) {
 				notifyAll();
 			}
-			System.out.println("removed: "+queue.peekFirst());
+			System.out.println("removed: " + queue.peekFirst());
 			return queue.remove();
 
 		} catch (InterruptedException e) {
@@ -66,6 +59,5 @@ public class BlockingQueue<K> {
 		return null;
 
 	}
-
 
 }

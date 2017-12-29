@@ -62,33 +62,28 @@ LLLLLLLLLLLLLLLLLLWL
 
  */
 
-
-
-
-
 class Solution {
 
-	public static void printOcean(List<String> points, int stringLength, int rowPoint, int colPoint){
+	public static void printOcean(List<String> points, int stringLength, int rowPoint, int colPoint) {
 
 		// Store the points as 2D Array
 		char[][] pointsMap = new char[points.size()][stringLength];
-		int row=0,col=0;
+		int row = 0, col = 0;
 
 		// Fill the 2D Array
-		for(String s: points) {
-			for(int i=0;i<s.length();i++) {
+		for (String s : points) {
+			for (int i = 0; i < s.length(); i++) {
 				pointsMap[row][col++] = s.charAt(i);
 			}
-			row++; col=0;
+			row++;
+			col = 0;
 		}
-
 
 		// Update the points to oceans
 		updateOceanPoints(pointsMap, rowPoint, colPoint);
 
-		for(int i=0;i<pointsMap.length;i++)
-		{
-			for(int j=0;j<pointsMap[0].length;j++){
+		for (int i = 0; i < pointsMap.length; i++) {
+			for (int j = 0; j < pointsMap[0].length; j++) {
 				System.out.print(pointsMap[i][j]);
 			}
 			System.out.print("\n");
@@ -97,7 +92,7 @@ class Solution {
 	}
 
 	public static class Point {
-		int row,col;
+		int row, col;
 
 		public Point(int row, int col) {
 			this.row = row;
@@ -106,33 +101,33 @@ class Solution {
 
 	}
 
-	public static List<Point> getAdjacentPoints(int row, int col, char[][] pointsMap){
+	public static List<Point> getAdjacentPoints(int row, int col, char[][] pointsMap) {
 
 		List<Point> adjacentPoints = new ArrayList<Point>();
 
-		if(row != pointsMap.length-1) 
-			adjacentPoints.add(new Point(row+1,col));
+		if (row != pointsMap.length - 1)
+			adjacentPoints.add(new Point(row + 1, col));
 
-		if(row !=0) 
-			adjacentPoints.add(new Point(row-1,col));
+		if (row != 0)
+			adjacentPoints.add(new Point(row - 1, col));
 
-		if(col != pointsMap[0].length-1) 
-			adjacentPoints.add(new Point(row,col+1));
+		if (col != pointsMap[0].length - 1)
+			adjacentPoints.add(new Point(row, col + 1));
 
-		if(col !=0) 
-			adjacentPoints.add(new Point(row,col-1));
+		if (col != 0)
+			adjacentPoints.add(new Point(row, col - 1));
 
-		if(row != pointsMap.length-1 && col != pointsMap[0].length-1)
-			adjacentPoints.add(new Point(row+1,col+1));
+		if (row != pointsMap.length - 1 && col != pointsMap[0].length - 1)
+			adjacentPoints.add(new Point(row + 1, col + 1));
 
-		if(row != pointsMap.length-1 && col != 0)
-			adjacentPoints.add(new Point(row+1,col-1));
+		if (row != pointsMap.length - 1 && col != 0)
+			adjacentPoints.add(new Point(row + 1, col - 1));
 
-		if(row != 0 && col != 0)
-			adjacentPoints.add(new Point(row-1,col-1));
+		if (row != 0 && col != 0)
+			adjacentPoints.add(new Point(row - 1, col - 1));
 
-		if(row != 0 && col != pointsMap[0].length-1)
-			adjacentPoints.add(new Point(row-1,col+1));
+		if (row != 0 && col != pointsMap[0].length - 1)
+			adjacentPoints.add(new Point(row - 1, col + 1));
 
 		return adjacentPoints;
 
@@ -140,26 +135,24 @@ class Solution {
 
 	public static void updateOceanPoints(char[][] pointsMap, int row, int col) {
 
-
 		char c = pointsMap[row][col];
 
 		// If the position is water, compute the adjacent points
-		if(c == 'W') {
+		if (c == 'W') {
 			// Update the point
 			pointsMap[row][col] = 'O';
 
 			List<Point> adjacentPoints = getAdjacentPoints(row, col, pointsMap);
 			// For each adjacent point
-			for(Point p: adjacentPoints) {
+			for (Point p : adjacentPoints) {
 				// Check if adjacent point is Land
-				if(pointsMap[p.row][p.col] == 'W') 
+				if (pointsMap[p.row][p.col] == 'W')
 					updateOceanPoints(pointsMap, p.row, p.col);
 
 			}
 		}
 
 	}
-
 
 	public static void main(String[] args) {
 		List<String> points = new ArrayList<String>();
@@ -183,8 +176,7 @@ class Solution {
 		points.add("LLLLWLLLLLLLLLLLLWLL");
 		points.add("LLLLLLLLLLLLLLLLLLWL");
 
-
-		printOcean(points,s.length(),10,12);
+		printOcean(points, s.length(), 10, 12);
 
 	}
 }

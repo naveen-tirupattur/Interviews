@@ -1,13 +1,11 @@
 package my.interview.samples;
 
-public class Node implements Comparable<Node>{
+public class Node implements Comparable<Node> {
 
 	public String data;
 	public boolean isVisited;
 
-
-	public Node(String data)
-	{
+	public Node(String data) {
 		this.data = data;
 	}
 
@@ -42,7 +40,7 @@ public class Node implements Comparable<Node>{
 
 	@Override
 	public boolean equals(Object obj) {
-		return ((Node)obj).data.equals(this.data);
+		return ((Node) obj).data.equals(this.data);
 	}
 
 	@Override
