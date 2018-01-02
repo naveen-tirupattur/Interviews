@@ -14,12 +14,12 @@ public class SubsetSum {
 	  // The value of subset[i][j] will be true if there is a subset of set[0..j-1] with sum equal to i
 		boolean[][] sumArray = new boolean[sum+1][a.length+1];
 
-	// If sum is 0, then answer is true
+		// If sum is 0, then answer is true
 		for (int i=0;i<=a.length;i++) {
 			sumArray[0][i] = true;
 		}
 		
-	// If sum is not 0 and set is empty, then answer is false
+		// If sum is not 0 and set is empty, then answer is false
 		for (int i=1;i<=sum;i++) {
 			sumArray[i][0] = false;  
 		}
