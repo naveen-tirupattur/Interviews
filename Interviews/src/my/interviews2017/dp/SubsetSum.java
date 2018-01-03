@@ -7,7 +7,7 @@ public class SubsetSum {
 	public static void main(String[] args) {
 
 		int[] a = {3, 34, 4, 12, 5, 2};
-		System.out.println(isSumDP(a,9));
+		System.out.println(isSumDP(a, 32));
 	}
 
 	public static boolean isSumDP(int[] a, int sum) {
@@ -26,9 +26,10 @@ public class SubsetSum {
 
 		for (int i=1;i<=sum;i++) {
 			for (int j=1;j<=a.length;j++) {
-				sumArray[i][j] = sumArray[i][j-1];
 				if (i-a[j-1] >=0) {
-					sumArray[i][j] = sumArray[i][j] || sumArray[i-a[j-1]][j-1];
+					sumArray[i][j] = sumArray[i][j-1] || sumArray[i-a[j-1]][j-1];
+				} else {
+					sumArray[i][j] = sumArray[i][j-1];
 				}
 			}
 		}
