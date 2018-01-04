@@ -10,6 +10,7 @@ public class WordChecker {
 		dictionary.add("i");
 		dictionary.add("mobile");
 		dictionary.add("samsung");
+		dictionary.add("am");
 		dictionary.add("sam");
 		dictionary.add("sung");
 		dictionary.add("man");
@@ -21,10 +22,10 @@ public class WordChecker {
 		dictionary.add("love");
 		dictionary.add("ice");
 		dictionary.add("cream");
-		
-		
+
 		//System.out.println(isInDictionary("havepushkar", dictionary));
-		System.out.println(printValidWords("iloveicecreamandmango", dictionary));
+		//System.out.println(printValidWords("iloveicecreamandmango", dictionary));
+		//System.out.println(isValidWord("iamsamo", dictionary));
 	}
 
 	public static boolean isInDictionary(String s, Set<String> D) {
