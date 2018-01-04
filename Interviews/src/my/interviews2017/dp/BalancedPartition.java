@@ -15,8 +15,8 @@ public class BalancedPartition {
 		}
 		boolean[] sumArray = new boolean[sum/2+1];
 		sumArray[0] = true; // Can make sum of 0 without any elements
-		for (int i=0;i<a.length;i++) {
-			for (int j=sum/2;j>=a[i];j--) {
+		for (int i=0;i<a.length;i++) { // For each element i check if sum of j can be made
+			for (int j=sum/2;j>=a[i];j--) { // for each sum j >= a[i] because sum of j cannot be made if j < a[i]
 				if(sumArray[j-a[i]]) sumArray[j] = true; // If a sum of j-a[i] can be made then sum of j can be made with element a[i]
 			}
 		}

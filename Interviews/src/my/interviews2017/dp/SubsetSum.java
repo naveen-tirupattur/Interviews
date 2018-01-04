@@ -44,8 +44,8 @@ public class SubsetSum {
 	public static boolean isSumDP1(int[] a, int sum) {
 		boolean[] sumArray = new boolean[sum+1];
 		sumArray[0] = true; // Can make sum of 0 without any elements
-		for (int i=0;i<a.length;i++) {
-			for (int j = sum;j>=a[i];j--) {
+		for (int i=0;i<a.length;i++) { // For each element check if the sum j can be possible
+			for (int j = sum;j>=a[i];j--) { // For all values of j greater than equal to a[i] because you cannot make sum j if j < a[i]
 				if(sumArray[j-a[i]]) sumArray[j] = true; // If a sum of j-a[i] can be made then sum of j can be made with element a[i]
 			}
 		}
