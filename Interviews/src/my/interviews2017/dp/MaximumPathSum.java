@@ -6,8 +6,8 @@ public class MaximumPathSum {
 		// TODO Auto-generated method stub
 		int[][] a = { {3,0,0,0}, {7,4,0,0}, {2,4,6,0}, {8,5,9,3} };
 		int[][] b = { {8,0,0,0}, {-4,4,0,0}, {2,2,6,0}, {1,1,1,1} };
-		System.out.println(findMaximumSum(a, 0, 0));
-		System.out.println(findMaximumSumDP(a));
+		System.out.println(findMaximumSum(b, 0, 0));
+		System.out.println(findMaximumSumDP(b));
 	}
 
 	public static int findMaximumSum(int[][] a, int i, int j) {
@@ -19,24 +19,15 @@ public class MaximumPathSum {
 	}
 
 	public static int findMaximumSumDP(int[][] a) {
-		int[][] sum = new int[a.length+1][a[0].length+1];
-		int max = Integer.MIN_VALUE;
-	
-		for (int i=0;i<=a.length;i++) {
-			sum[i][0] = 0;	
-		}
-
-		for (int j=0;j<=a[0].length;j++) {
-			sum[0][j] = 0;	
-		}
-
-		for (int i=1;i<=a.length;i++) {
-			for (int j=1; j<=a[0].length;j++) {
-				sum[i][j] = a[i-1][j-1] + Math.max(sum[i-1][j-1], sum[i-1][j]);
-				if (max < sum[i][j]) max = sum[i][j];
+		for (int i=a.length-2;i>=0;i--) {
+			for (int j=0;j<=i;j++) {
+				if(a[i+1][j] > a[i+1][j+1]) {
+					a[i][j] += a[i+1][j];
+				} else
+					a[i][j] += a[i+1][j+1];
 			}
 		}
-		return max;
+		return a[0][0];
 	}
 
 }
