@@ -30,7 +30,8 @@ public class BuySellStock {
 			while (i < stocks.length-1 && stocks[i]>=stocks[i+1]) { // Keep going forward till you find local minima
 				i++;
 			}
-			if (i==stocks.length-1) { // If you reach end of array then break because this is a decreasing sequence and no profit could be made
+			if (i==stocks.length-1) { 
+				// If you reach end of array then break because this is a decreasing sequence and no profit could be made
 				break;
 			}
 			int start = i++; // Found the local minima so flag it and move to next element
