@@ -10,10 +10,10 @@ public class MaxiumProductExceptSelf {
 	}
 	
 	public static int findMaximumProduct(int[] a) {
-		int[] result = ProductExceptSelf.product(a);
+		int[] result = ProductExceptSelf.product(a); // Find the product array
 		int maximumProduct = 0;
 		for (int i=0;i<result.length;i++) {
-			if (result[i] >= maximumProduct) maximumProduct = result[i];
+			if (result[i] >= maximumProduct) maximumProduct = result[i]; // Find maximum
 		}
 		return maximumProduct;
 	}
