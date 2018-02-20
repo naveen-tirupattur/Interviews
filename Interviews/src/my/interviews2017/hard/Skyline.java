@@ -31,18 +31,18 @@ public class Skyline {
 			points.add(end);
 		}
 
-		Collections.sort(points);
-		PriorityQueue<Integer> heap = new PriorityQueue<Integer>(points.size(), Collections.reverseOrder());
+		Collections.sort(points); // Sort the points
+		PriorityQueue<Integer> heap = new PriorityQueue<Integer>(points.size(), Collections.reverseOrder()); 
 		for (Point p:points) {
-			if (p.isStart) {
-				if (heap.isEmpty() || heap.peek() < p.height) {
+			if (p.isStart) { // Check if it is a starting point
+				if (heap.isEmpty() || heap.peek() < p.height) { // If heap is empty or an element which is taller than this exists already which means this point will not be visible so don't add
 					endPoints.add(new int[] {p.position, p.height});
 				}
-				heap.add(p.height);
+				heap.add(p.height); // Update the heap
 			} else {
-				heap.remove(p.height);
-				if (heap.isEmpty()) endPoints.add(new int[]{p.position, 0});
-				else if (heap.peek() < p.height) endPoints.add(new int[]{p.position, heap.peek()});
+				heap.remove(p.height); // If it is an end point, remove the corresponding starting point from heap
+				if (heap.isEmpty()) endPoints.add(new int[]{p.position, 0}); // If heap is empty which means you removed all points so close this out with new end point.
+				else if (heap.peek() < p.height) endPoints.add(new int[]{p.position, heap.peek()}); // Check if a point smaller than this exists, if yes create a new end point with that height.
 			}
 		}
 
@@ -68,9 +68,9 @@ public class Skyline {
 					/*
 					 *  Check if both are ending at that position, if yes then put the smallest one first 
 					 *  because this will not create a new end point in case of empty heap or if top of heap is greater than this point. 
-					 *  The point that is after this ending at same position will take care of creating an end point.
+					 *  The point that is after this ending at same position which is taller than this will take care of creating an end point.
 					 *  For example if you have <2,7,15>, <2,7,10> if you place <7,10> before <7,15> 
-					 *  then when you reach <7,10> you wouldn't remove anything from heap because you did not add anything corresponding to it and wouldn't create an entry in output either.
+					 *  then when you reach <7,10> you remove 10 from heap but 15 is still there so to avoid creating an end point it is important to place this point before point ending at 15
 					 *    
 					 */
 				} else if (!this.isStart && !o.isStart) { 
