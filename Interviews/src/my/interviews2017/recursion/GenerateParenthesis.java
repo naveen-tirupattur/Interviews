@@ -1,33 +1,37 @@
 package my.interviews2017.recursion;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class GenerateParenthesis {
 
 	public static void main(String[] args) {
-		
-		String s = new String();
-		String p = "ABCD";
-		char c[] = new char[] {'(', ')'};
-		generateParenthesis(3, 0, 0, s, c);
-
+		System.out.println(generateParenthesis(3));
 	}
-	
-	public static void generateParenthesis(int n, int left, int right, String s, char[] c) {
-		
-		if(left == n && right == n) { System.out.println(s); return;}
-		
-		for (int i =0;i<c.length;i++) {
-			if (c[i] == '(' && left < n) {
-				s = s+c[i];
-				generateParenthesis(n, left+1, right, s, c);
-				s = s.substring(0, s.length()-1);
-				
-			} else if ( c[i] == ')' && right < left) {
-				s = s+c[i];
-				generateParenthesis(n, left, right+1, s, c);
-				s = s.substring(0, s.length()-1);
+
+	public static List<String> generateParenthesis(int n) {
+		List<String> pList = new ArrayList<String>(); 
+		char[] tempString = new char[2*n];
+		char [] input = {'(',')'};
+		generate(n, pList, 0,0,0,tempString,input);
+		return pList;
+	}
+
+	public static void generate(int n, List<String> parentheses, int numOpen, int numClose, int count, char[] tempString, char[] input) {
+
+		if (numOpen == n && numClose == n) {
+			parentheses.add(String.valueOf(tempString));
+			return;
+		}
+
+		for (int i =0;i<input.length;i++) {
+			if (input[i] == '(' && numOpen < n ) {
+				tempString[count] = input[i];
+				generate(n, parentheses, numOpen+1, numClose, count+1, tempString, input);
+			} else if (input[i] == ')' && numClose < numOpen) {
+				tempString[count] = input[i];
+				generate(n, parentheses, numOpen, numClose+1, count+1, tempString, input);
 			}
 		}
-		
 	}
-
 }
