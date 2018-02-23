@@ -1,4 +1,4 @@
-package my.interviews2017;
+package my.interviews2017.leetcode;
 
 import java.util.Arrays;
 
