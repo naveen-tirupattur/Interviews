@@ -6,7 +6,6 @@ public class RemoveNFromLastNode {
 
 		ListNode head = new ListNode(1);
 		head.next = new ListNode(2);
-
 		System.out.println(delete(head, 2));
 	}
 
@@ -16,17 +15,17 @@ public class RemoveNFromLastNode {
 		dummy.next = head;
 		ListNode n1 = head;
 
-		while (n > 0 && n1 != null) {
+		while (n > 0 && n1 != null) { // move first node n steps
 			n1 = n1.next;
 			n--;
 		}
-		ListNode n2 = dummy;
+		ListNode n2 = dummy; // Start from prev node to head
 		while (n1 != null) {
 			n1 = n1.next;
 			n2 = n2.next;
 		}
-		n2.next = n2.next.next;
-		return dummy.next;
+		n2.next = n2.next.next; // You are at node before intended node so update the pointers
+		return dummy.next; // Return the head
 	}
 	
 	public static class ListNode {
