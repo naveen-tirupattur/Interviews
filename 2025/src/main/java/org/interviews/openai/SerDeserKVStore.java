@@ -69,7 +69,7 @@ public class SerDeserKVStore {
       } else if (c == '\\') {
         s.append("\\\\");
       } else if (c == '\n') {
-        s.append("\\n");
+        s.append("\\\n");
       } else {
         s.append(c);
       }
@@ -84,7 +84,7 @@ public class SerDeserKVStore {
       char c = value.charAt(index);
       if (c == '\\' && index + 1 < value.length()) {
         char nextChar = value.charAt(index + 1);
-        if (nextChar == 'n') {
+        if (nextChar == '\n') {
           s.append("\n");
         } else if (nextChar == '=') {
           s.append("=");

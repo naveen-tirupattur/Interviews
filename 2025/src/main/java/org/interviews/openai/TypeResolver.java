@@ -96,23 +96,23 @@ public class TypeResolver {
       if (paramValue.length() == 1 && Character.isUpperCase(paramValue.charAt(0))) {
         // If generic type is already in the map, check for consistency.
         if (typeMap.containsKey(paramValue)) {
-          return !typeMap.get(paramValue).equals(argsValue);
+          return typeMap.get(paramValue).equals(argsValue);
         } else {
           // Otherwise, add the new mapping.
           typeMap.put(paramValue, argsNode);
-          return false;
+          return true;
         }
       } else {
-        return !paramValue.equals(argsValue);
+        return paramValue.equals(argsValue);
       }
     } else if (paramsNode instanceof ListNode && argsNode instanceof ListNode) {
       List<Node> paramNodes = ((ListNode) paramsNode).nodes;
       List<Node> argNodes = ((ListNode) argsNode).nodes;
       if (argNodes.size() != paramNodes.size()) return true;
       for (int i = 0; i < argNodes.size(); i++) {
-        if (mapNodesAndMapGenerics(paramNodes.get(i), argNodes.get(i), typeMap)) return true;
+        if (!mapNodesAndMapGenerics(paramNodes.get(i), argNodes.get(i), typeMap)) return false;
       }
-      return false;
+      return true;
     }
     return false;
   }
