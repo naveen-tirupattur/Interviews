@@ -8,18 +8,13 @@ class Cell {
   char column;
   int val;
   List<String> formulas;
-  int cachedVal;
-  boolean isCacheStale;
-  List<Cell> dependents;
+
 
   public Cell(int row, char col, int val) {
     this.row = row;
     this.column = col;
     this.val = val;
     this.formulas = new ArrayList<>();
-    this.cachedVal = 0;
-    this.isCacheStale = false;
-    this.dependents = new ArrayList<>();
   }
 }
 
@@ -49,24 +44,7 @@ public class ExcelSum {
     int rowNum = Integer.parseInt(s.substring(1));
     return new int[]{rowNum, getColIndex(colChar)};
   }
-
-  // Helper to invalidate the cache of a cell and its dependents
-  private void invalidateCache(int row, int col) {
-    Cell cell = sheet[row][col];
-    if (!cell.isCacheStale) {
-      cell.isCacheStale = true;
-      // Recursively invalidate dependents' caches
-      for (Cell dependentCell : cell.dependents) {
-        // Find the coordinates of the dependent cell to use in the recursive call
-        // This part requires a reverse lookup from Cell to (row, col)
-        // For simplicity, we can assume the dependent cell's coordinates are stored
-        // within the Cell object itself or manage a separate reverse map.
-        // For now, let's just mark the dependent's cache as stale.
-        dependentCell.isCacheStale = true;
-        // A more robust solution would track coordinates and invalidate recursively.
-      }
-    }
-  }
+  
 
   public void set(int row, char column, int val) {
     if (row < 1 || row > this.height || getColIndex(column) < 0 || getColIndex(column) >= this.width) {

@@ -22,6 +22,7 @@ class TopVotedCandidate {
       if (count >= currentMaxVotes) {
         currentMaxVotes = count;
         currentWinner = persons[i];
+        
       }
       winners[i] = currentWinner;
     }

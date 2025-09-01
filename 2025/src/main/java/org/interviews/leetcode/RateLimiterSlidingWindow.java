@@ -27,7 +27,7 @@ public class RateLimiterSlidingWindow {
     }
     return false;
   }
-  
+
   public static void main(String[] args) throws InterruptedException {
     // Rule: 3 requests per 5 seconds
     RateLimiterSlidingWindow rateLimiterSlidingWindow = new RateLimiterSlidingWindow(3, 5); // 3 requests per 5 seconds
